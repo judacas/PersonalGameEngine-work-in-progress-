@@ -57,7 +57,7 @@ public class myImage extends JPanel {
     }
 
     public void setGradient(Color c) {
-        myVector4 col = new myVector4(c);
+        Vector4 col = new Vector4(c);
         for (int x = 0; x < masterPiece.length; x++) {
             for (int y = 0; y < masterPiece[0].length; y++) {
                 col.l = (int)((float)(x+y)/(float)(masterPiece.length + masterPiece[0].length) * 255);
