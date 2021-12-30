@@ -1,8 +1,8 @@
 import java.awt.Color;
 public class Vector4 {
-    public float i, j, k, l;
+    public double i, j, k, l;
 
-    public Vector4(float i, float j, float k, float l) {
+    public Vector4(double i, double j, double k, double l) {
         this.i = i;
         this.j = j;
         this.k = k;

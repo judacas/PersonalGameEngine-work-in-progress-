@@ -32,11 +32,11 @@ public class myImage extends JPanel {
 
     public void paintComponent(Graphics g) {
         if (isPaintable) {
-            masterMind.isPainting = true;
+            MasterMind.isPainting = true;
             canvas.setRGB(0, 0, width, height, convertTo1D(masterPiece), 0, width);
             super.paintComponent(g);
             ((Graphics2D) g).drawImage(canvas, null, null);
-            masterMind.isPainting = false;
+            MasterMind.isPainting = false;
         }
         else {
             System.out.println("ayo your painting a nonpaintable image bruh");
@@ -60,7 +60,7 @@ public class myImage extends JPanel {
         Vector4 col = new Vector4(c);
         for (int x = 0; x < masterPiece.length; x++) {
             for (int y = 0; y < masterPiece[0].length; y++) {
-                col.l = (int)((float)(x+y)/(float)(masterPiece.length + masterPiece[0].length) * 255);
+                col.l = (int)((double)(x+y)/(double)(masterPiece.length + masterPiece[0].length) * 255);
                 masterPiece[x][y] = col.toColor();
             }
         }
@@ -99,7 +99,7 @@ public class myImage extends JPanel {
      * is just the alpha value. 
      * thus in essence it is c1 + (c2-c1) * c2.a but for each color individually
     */
-    public static Color interpolate(Color c1, Color c2, float t) {
+    public static Color interpolate(Color c1, Color c2, double t) {
         if (c1 == null) {
             return c2;
         }

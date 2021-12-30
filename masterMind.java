@@ -2,19 +2,19 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public class masterMind {
+public class MasterMind {
     
     private static long oldTime;
     private static int deltaTime;
     private static long currentTime;
-    private static float fps = 30;
-    private static float delay = 1000 / fps;
+    private static double fps = 30;
+    private static double delay = 1000 / fps;
     public static boolean isPainting;
     private static int w;
     private static int h;
     private static JFrame f;
     private static myImage endpoint;
-    private static float xVel, xPos, yVel, yPos;
+    private static double xVel, xPos, yVel, yPos;
 
     public static void main(String[] args) throws InterruptedException {
         isPainting = false;
