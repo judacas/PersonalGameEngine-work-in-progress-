@@ -14,7 +14,7 @@ public class MasterMind {
     private static int h;
     private static JFrame f;
     private static myImage endpoint;
-    private static double xVel, xPos, yVel, yPos;
+    static Polygon sprite;
 
     public static void main(String[] args) throws InterruptedException {
         isPainting = false;
@@ -27,11 +27,11 @@ public class MasterMind {
         f.add(endpoint);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
-        xVel = (w/1000f)/10;
-        xPos = 0;
-        yVel = (w / 1000f) / 10;
-        yPos = 0;
-
+        Vector2[] verticies = new Vector2[3];
+        for (int i = 0; i < verticies.length; i++) {
+            verticies[i] = Vector2.random(Vector2.cartesianInit(0, 0), Vector2.cartesianInit(500, 500));
+        }
+        sprite = new Polygon(verticies, Vector2.zero, 0, Color.white, Vector2.zero, Vector2.cartesianInit(100, 50));
         oldTime = System.currentTimeMillis();
         deltaTime = 0;
         runGame();
@@ -52,14 +52,13 @@ public class MasterMind {
             deltaTime = (int) (currentTime - oldTime);
             oldTime = currentTime;
             endpoint.fill(Color.black);
-            endpoint.addRect(Color.white, (int) (xPos), (int) yPos, 100, 100);
-            xPos += (int) (xVel * deltaTime);
-            yPos += (int) (yVel * deltaTime);
-            if (xPos > w - 100 || xPos < -25) {
-                xVel *= -1;
+            endpoint.myAdd(sprite);
+            sprite.position = Vector2.add(sprite.position, Vector2.scale(sprite.velocity, deltaTime));
+            if (sprite.position.x > w - 100 || sprite.position.x < -25) {
+                sprite.position.x *= -1;
             }
-            if (yPos > h - 100 || yPos < -25) {
-                yVel *= -1;
+            if (sprite.position.y > h - 100 || sprite.position.y < -25) {
+                sprite.position.y *= -1;
             }
             endpoint.repaint();
         }

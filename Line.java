@@ -1,38 +1,35 @@
-import java.awt.Color;
-
 //OK I get it, its a line segment not a line whatever
 public class Line {
     public Vector2 startPoint, endPoint;
-    private double theta, magnitude;
+    public double theta, length, normal, width, slope;
 
-    public Line(Vector2 startPoint, Vector2 endPoint) {
+    public Line(Vector2 startPoint, Vector2 endPoint, double theta, double length) {
         this.startPoint = startPoint;
         this.endPoint = startPoint;
-        magnitude = Vector2.distance(startPoint, endPoint);
-        theta = (double)(Math.atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x));
+        this.length = length;
+        this.theta = theta;
+        normal = -1 / theta;
+        slope = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
     }
 
-    public Line(Vector2 starpoint, double theta, double magnitude) {
-        this.theta = theta;
-        this.magnitude = magnitude;
-        this.startPoint = starpoint;
-        endPoint = Vector2.add(starpoint, new Vector2(theta, magnitude));
+    public static Line initPolar(Vector2 startPoint, double theta, double length) {
+        Vector2 tempEndPoint = Vector2.add(startPoint, Vector2.polarInit(theta, length));
+        return new Line(startPoint, tempEndPoint, theta, length);
+
+    }
+
+    public static Line initCartesian(Vector2 startPoint, Vector2 endPoint) {
+        double tempTheta = Math.atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x);
+        double tempLength = Vector2.distance(startPoint, endPoint);
+        return new Line(startPoint, endPoint, tempTheta, tempLength);
+
     }
     
-    // Might make it a bit more efficient not having to calculate the magnitude each time
-    // But for right now I don't really care though sooooooo frick it
-    // public double getLength() {
-    //     if (magnitude == -1) {
-    //         magnitude = Vector2.distance(startPoint, endPoint);
-    //     }
-    //     return magnitude;
-    // }
+    public Line floor() {
+        return initCartesian(startPoint.floor(), endPoint.floor());
+    }
 
-    public Color[][] addToImage(myImage image) {
-        Color[][] temp = image.masterPiece;
-
-
-
-        return temp;
+    public double predictY(double x) {
+        return (x - startPoint.x) * slope + startPoint.y;
     }
 }

@@ -1,10 +1,14 @@
-public class Rectangle {
-    public int x, y, w, h;
+import java.awt.Color;
 
-    public Rectangle(int xPos, int yPos, int width, int height) {
-        x = xPos;
-        y = yPos;
-        w = width;
-        h = height;
+// since rectangle has symmetry and ooposit sides congruent and parallerl
+// there can be some optimization by overriding some methods
+// rectangle optimization will be quite useful as it will be most common to render
+// remember that lines with a width are really rectangles
+public class Rectangle extends Polygon{
+
+    public Rectangle(Vector2[] verticies, Vector2 origin, double theta) {
+        super(verticies, origin, theta, Color.black, Vector2.zero, Vector2.zero);
+        //TODO Auto-generated constructor stub
     }
+    
 }

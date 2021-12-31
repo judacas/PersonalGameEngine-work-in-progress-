@@ -19,11 +19,18 @@ public class myImage extends JPanel {
         if (isPaintable) {
             canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         }
-        setBackground(col);
-        masterPiece = new Color[width][height];
+        fill(col);
         // masterpiece = addRect(masterpiece, new Color (255,0,255,255), width / 4, height / 8, width / 2, height / 4);
         // canvas.setRGB(0, 0, masterpiece.length, masterpiece[0].length, ColorMaths.convertTo1D(masterpiece), 0, masterpiece.length);
         // repaint();
+    }
+
+    public myImage(Color[][] image) {
+        this.masterPiece = image;
+        isPaintable = false;
+        width = image.length;
+        height = image[0].length;
+        setBackground(new Color(0,0,0,0));
     }
 
     public Dimension getPreferredSize() {
@@ -74,7 +81,7 @@ public class myImage extends JPanel {
 
     public void addRect(Color c, int x1, int y1, int width, int height) {
         if(width > 0 && height > 0)
-            add(new myImage(width, height, c, false), x1, y1);
+            myAdd(new myImage(width, height, c, false), x1, y1);
     }
 
     public void drawOval(Color c, int x1, int y1, int width, int height) {
@@ -82,7 +89,7 @@ public class myImage extends JPanel {
         repaint();
     }
 
-    public void add(myImage adde, int xStart, int yStart) {
+    public void myAdd(myImage adde, int xStart, int yStart) {
         for (int x = (Math.min(xStart, 0) * -1); x < adde.width && x + xStart < width; x++) {
             for (int y = (Math.min(yStart, 0) * -1); y < adde.height && y + yStart < height; y++) {
                 // You gotta check if the adde is null because of the getalpha
@@ -90,6 +97,12 @@ public class myImage extends JPanel {
             }
         }
     }
+
+    public void myAdd(Polygon polygon) {
+        myAdd(new myImage(polygon.pixelsOutline), (int)polygon.position.floor().x, (int)polygon.position.floor().y);
+    }
+    
+
 
 
 
