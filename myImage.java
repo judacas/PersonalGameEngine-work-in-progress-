@@ -93,13 +93,25 @@ public class myImage extends JPanel {
         for (int x = (Math.min(xStart, 0) * -1); x < adde.width && x + xStart < width; x++) {
             for (int y = (Math.min(yStart, 0) * -1); y < adde.height && y + yStart < height; y++) {
                 // You gotta check if the adde is null because of the getalpha
-                masterPiece[x + xStart][y + yStart] = (adde.masterPiece[x][y] != null) ? interpolate(masterPiece[x + xStart][y + yStart], adde.masterPiece[x][y], adde.masterPiece[x][y].getAlpha() / 255f) : adde.getBackground();
+                masterPiece[x + xStart][y + yStart] = (adde.masterPiece[x][y] != null)
+                        ? interpolate(masterPiece[x + xStart][y + yStart], adde.masterPiece[x][y],
+                                adde.masterPiece[x][y].getAlpha() / 255f)
+                        : adde.getBackground();
+            }
+        }
+    }
+    
+    public void myAdd(Color[][] adde, int xStart, int yStart) {
+        for (int x = (Math.min(xStart, 0) * -1); x < adde.length && x + xStart < width; x++) {
+            for (int y = (Math.min(yStart, 0) * -1); y < adde[0].length && y + yStart < height; y++) {
+                // You gotta check if the adde is null because of the getalpha
+                masterPiece[x + xStart][y + yStart] = (adde[x][y] != null) ? interpolate(masterPiece[x + xStart][y + yStart], adde[x][y], adde[x][y].getAlpha() / 255f) : masterPiece[x + xStart][y + yStart];
             }
         }
     }
 
     public void myAdd(Polygon polygon) {
-        myAdd(new myImage(polygon.pixelsOutline), (int)polygon.position.floor().x, (int)polygon.position.floor().y);
+        myAdd(new myImage(polygon.updateOutline()), (int)polygon.position.floor().x, (int)polygon.position.floor().y);
     }
     
 
@@ -133,7 +145,7 @@ public class myImage extends JPanel {
         int[] temp = new int[old.length * old[0].length];
         // System.out.println(temp.length);
         int i = 0;
-        for (int y = 0; y < old[0].length; y++) {
+        for (int y = old[0].length - 1; y >= 0; y--) {
             for (int x = 0; x < old.length; x++) {
                 // System.out.println(i);
                 // if (old[x][y] != null) {

@@ -1,0 +1,5 @@
+when it rotates it rotates not on one specific point but instead origin drifts aorund
+    could be just flooring issue
+        Try doing a floored vector2 class  (subclass)
+
+Sooooo polar init may not be initializing lines of the correct length????

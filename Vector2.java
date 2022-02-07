@@ -40,10 +40,6 @@ public class Vector2 {
         return (double) (Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2)));
     }
     
-    public static double getTheta(Vector2 vector) {
-        return Math.atan2(vector.y, vector.x);
-    }
-    
     public static Vector2 rotate(Vector2 vector, double theta) {
         return Vector2.polarInit(vector.theta + theta, vector.magnitude);
     }
@@ -53,7 +49,7 @@ public class Vector2 {
     }
 
     public Vector2 floor() {
-        return Vector2.cartesianInit((int) x, (int) y);
+        return Vector2.cartesianInit((int)(x), (int)(y));
     }
     
     public static Vector2 random(Vector2 minimum, Vector2 maximum) {
@@ -62,6 +58,10 @@ public class Vector2 {
 
     public boolean equals(Vector2 vector) {
         return (x == vector.x) && (y == vector.y);
+    }
+
+    public String toString() {
+        return "X: " + (Math.round(x*100)/100f) + " Y: " + (Math.round(y*100)/100f);
     }
     
 }

@@ -8,7 +8,6 @@ public class Rectangle extends Polygon{
 
     public Rectangle(Vector2[] verticies, Vector2 origin, double theta) {
         super(verticies, origin, theta, Color.black, Vector2.zero, Vector2.zero);
-        //TODO Auto-generated constructor stub
     }
     
 }
