@@ -8,8 +8,7 @@ public class Line {
     public enum Type {
         vertical,
         horizontal,
-        tall,
-        wide
+        normal
     }
 
     public Type type;
@@ -32,11 +31,11 @@ public class Line {
         else if (endPoint.x - startPoint.x == 0) {
             type = Type.vertical;
         }
-        else if (Math.abs(endPoint.y - startPoint.y) > Math.abs(endPoint.x - startPoint.x)) {
-            type = Type.tall;
-        }
+        // else if (Math.abs(endPoint.y - startPoint.y) > Math.abs(endPoint.x - startPoint.x)) {
+        //     type = Type.normal;
+        // }
         else {
-            type = Type.wide;
+            type = Type.normal;
         }
         System.out.println("made a " + type + " line");
     }
@@ -103,59 +102,31 @@ public class Line {
                     temp[(int)startPoint.x][y] = myImage.interpolate(temp[(int)startPoint.x][y], color, color.getAlpha());
                 }
                 break;
-            case tall:
-                int yStart = (int) bottom.y;
-                int yEnd = yStart;
-                // temp[(int)left.x][(int)left.y] = color;
-                int xDir = (bottom.x < top.x) ? 1 : -1;
-                // int yDirection = 1;
-                for (int x = (int) bottom.x; Math.abs(top.x - x) <= Math.abs(top.x - bottom.x); x += xDir) {
-                    // if (x > temp.length) {
-                    //     if (xDir == 1) {
-                    //         return temp;
-                    //     } else {
-                    //         continue;
-                    //     }
-                    // }
-                    // if (x < 0) {
-                    //     if (xDir == -1) {
-                    //         return temp;
-                    //     }
-                    //     else {
-                    //         continue;
-                    //     }
-                    // }
-                    yStart = yEnd;
-                    yEnd = (int)predictY(x);
-                    for (int y = (int) bottom.y; y <= yEnd; y++) {
-                        // if (y > temp[0].length) {
-                        //     return temp;
-                        // }
-                    
-                        // if (x < 0) {
-                        //     if (xDir == -1) {
-                        //         return temp;
-                        //     } else {
-                        //         continue;
-                        //     }
-                        // }
-                        // System.out.println(x);
-                        temp[x][y] = myImage.interpolate(temp[x][y], color, color.getAlpha());
-                    }
-                }
-                break;
-            case wide:
-                int xStart = (int) bottom.x;
+            case normal:
+            int xStart = (int) bottom.x;
                 int xEnd = xStart;
                 // temp[(int)bottom.x][(int)bottom.y] = color;
                 int xDirection = (top.x > bottom.x) ? 1 : -1;
                 for (int y = (int) bottom.y; y <= (int) top.y; y++) {
                     xStart = xEnd;
-                    xEnd = (int)predictX(y);
-                    for (int x = 0; x <= (int) Math.abs(xEnd - xStart); x += xDirection) {
-                        temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha());;;
+                    xEnd = (int) predictX(y);
+                    
+                    for (int x = 0; Math.abs(x) <= (int) Math.abs(xEnd - xStart); x += xDirection) {
+                        System.out.println("xStart:" + xStart + " | xEnd: " + xEnd + " | X: " + x + " | Y: " + y);
+                        temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha());
                     }
                 }
+                // int xStart = (int) bottom.x;
+                // int xEnd = xStart;
+                // // temp[(int)bottom.x][(int)bottom.y] = color;
+                // int xDirection = (top.x > bottom.x) ? 1 : -1;
+                // for (int y = (int) bottom.y; y <= (int) top.y; y++) {
+                //     xStart = xEnd;
+                //     xEnd = (int)predictX(y);
+                //     for (int x = 0; x <= (int) Math.abs(xEnd - xStart); x += xDirection) {
+                //         temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha());;;
+                //     }
+                // }
                 break;
         }
         return temp;

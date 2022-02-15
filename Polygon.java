@@ -102,49 +102,49 @@ public class Polygon {
     }
     
     public Color[][] updateOutline() {
-        if (!isOutlineUpdated) {
-            if (!isOrientationUpdated) {
-                updateOrientation();
-            }
-            pixelsOutline = new Color[(int) (rightMost.x) - (int) (leftMost.x) + 1][(int) (bottomMost.y) - (int) (topMost.y) + 1];
-            // System.out.print("\n" + pixelsOutline.length + " by ");
-            // System.out.println(pixelsOutline[0].length);
-            for (Line line : rotatedLines) {
-                // color = new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1f);
-                Line temp = line.floor();
-                // System.out.println(temp.slope);
-                if (temp.slope > 0) {
-                    int y = (int) (temp.top);
-                    for (int x = (int) (temp.left); x < (int) (temp.right); x++) {
-                        while (y <= temp.predictY(x) && y<temp.bottom) {
-                            // System.out.println("Trying at " + Vector2.cartesianInit(x, y));
-                            pixelsOutline[(int) (x - leftMost.x)][(int) (y - topMost.y)] = color;
-                            y++;
-                        }
-                        y--;
-                    }
-                } else {
-                    int y = (int) (temp.bottom);
-                    for (int x = (int) (temp.left); x < (int) (temp.right); x++) {
-                        while (y >= temp.predictY(x) && y > temp.top) {
-                            // System.out.print("Trying at " + Vector2.cartesianInit(x, y));
-                            // System.out.println("  |  resulting in  " + Vector2.cartesianInit((int) (x - leftMost.x),(int) (y - topMost.y)));
-                            pixelsOutline[(int) (x - leftMost.x)][(int) (y - topMost.y)] = color;
-                            y--;
-                        }
-                        y++;
-                    }
-                }
-            }
-            // for (int x = 0; x < pixelsOutline.length; x++) {
-            //     for (int y = 0; y < pixelsOutline[0].length; y++) {
-            //         System.out.print((pixelsOutline[x][y] != null) ? "x" : "o");
-            //     }
-            //     System.out.println("");
-            // }
-        }
+        // if (!isOutlineUpdated) {
+        //     if (!isOrientationUpdated) {
+        //         updateOrientation();
+        //     }
+        //     pixelsOutline = new Color[(int) (rightMost.x) - (int) (leftMost.x) + 1][(int) (bottomMost.y) - (int) (topMost.y) + 1];
+        //     // System.out.print("\n" + pixelsOutline.length + " by ");
+        //     // System.out.println(pixelsOutline[0].length);
+        //     for (Line line : rotatedLines) {
+        //         // color = new Color((float)Math.random(), (float)Math.random(), (float)Math.random(), 1f);
+        //         Line temp = line.floor();
+        //         // System.out.println(temp.slope);
+        //         if (temp.slope > 0) {
+        //             int y = (int) (temp.top);
+        //             for (int x = (int) (temp.left); x < (int) (temp.right); x++) {
+        //                 while (y <= temp.predictY(x) && y<temp.bottom) {
+        //                     // System.out.println("Trying at " + Vector2.cartesianInit(x, y));
+        //                     pixelsOutline[(int) (x - leftMost.x)][(int) (y - topMost.y)] = color;
+        //                     y++;
+        //                 }
+        //                 y--;
+        //             }
+        //         } else {
+        //             int y = (int) (temp.bottom);
+        //             for (int x = (int) (temp.left); x < (int) (temp.right); x++) {
+        //                 while (y >= temp.predictY(x) && y > temp.top) {
+        //                     // System.out.print("Trying at " + Vector2.cartesianInit(x, y));
+        //                     // System.out.println("  |  resulting in  " + Vector2.cartesianInit((int) (x - leftMost.x),(int) (y - topMost.y)));
+        //                     pixelsOutline[(int) (x - leftMost.x)][(int) (y - topMost.y)] = color;
+        //                     y--;
+        //                 }
+        //                 y++;
+        //             }
+        //         }
+        //     }
+        //     // for (int x = 0; x < pixelsOutline.length; x++) {
+        //     //     for (int y = 0; y < pixelsOutline[0].length; y++) {
+        //     //         System.out.print((pixelsOutline[x][y] != null) ? "x" : "o");
+        //     //     }
+        //     //     System.out.println("");
+        //     // }
+        // }
         
-        isOutlineUpdated = true;
+        // isOutlineUpdated = true;
     return pixelsOutline;
     }
 
