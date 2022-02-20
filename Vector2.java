@@ -32,8 +32,8 @@ public class Vector2 {
         return Vector2.cartesianInit(a.x - b.x, a.y - b.y);
     }
 
-    public static Vector2 scale(Vector2 vector, double scalar) {
-        return Vector2.cartesianInit(vector.x * scalar, vector.y * scalar);
+    public Vector2 scale(double scalar) {
+        return Vector2.cartesianInit(this.x * scalar, this.y * scalar);
     }
 
     public static double distance(Vector2 a, Vector2 b) {

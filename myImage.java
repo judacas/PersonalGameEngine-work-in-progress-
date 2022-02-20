@@ -3,6 +3,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import javax.lang.model.util.Elements.Origin;
 import javax.swing.JPanel;
 
 public class myImage extends JPanel {
@@ -95,7 +97,7 @@ public class myImage extends JPanel {
                 // You gotta check if the adde is null because of the getalpha
                 masterPiece[x + xStart][y + yStart] = (adde.masterPiece[x][y] != null)
                         ? interpolate(masterPiece[x + xStart][y + yStart], adde.masterPiece[x][y],
-                                adde.masterPiece[x][y].getAlpha() / 255f)
+                                (adde.masterPiece[x][y].getAlpha() / 255f))
                         : adde.getBackground();
             }
         }
@@ -105,13 +107,13 @@ public class myImage extends JPanel {
         for (int x = (Math.min(xStart, 0) * -1); x < adde.length && x + xStart < width; x++) {
             for (int y = (Math.min(yStart, 0) * -1); y < adde[0].length && y + yStart < height; y++) {
                 // You gotta check if the adde is null because of the getalpha
-                masterPiece[x + xStart][y + yStart] = (adde[x][y] != null) ? interpolate(masterPiece[x + xStart][y + yStart], adde[x][y], adde[x][y].getAlpha() / 255f) : masterPiece[x + xStart][y + yStart];
+                masterPiece[x + xStart][y + yStart] = (adde[x][y] != null) ? interpolate(masterPiece[x + xStart][y + yStart], adde[x][y], (adde[x][y].getAlpha() / 255f)) : masterPiece[x + xStart][y + yStart];
             }
         }
     }
 
     public void myAdd(Polygon polygon) {
-        myAdd(new myImage(polygon.updateOutline()), (int)polygon.position.floor().x, (int)polygon.position.floor().y);
+        myAdd(new myImage(polygon.updateOutline()), (int)(polygon.position.floor().x - polygon.origin.x), (int)(polygon.position.floor().y - polygon.origin.y));
     }
     
 
@@ -125,6 +127,7 @@ public class myImage extends JPanel {
      * thus in essence it is c1 + (c2-c1) * c2.a but for each color individually
     */
     public static Color interpolate(Color c1, Color c2, double t) {
+        System.out.print("\n" + c1 + " " + c2 + "  |  ");
         if (c1 == null) {
             return c2;
         }
@@ -132,10 +135,10 @@ public class myImage extends JPanel {
             return c1;
         }
         int r, g, b;
-        r = c1.getRed() + (int) ((c2.getRed() - c1.getRed()) * t);
-        g = c1.getGreen() + (int) ((c2.getGreen() - c1.getGreen()) * t);
-        b = c1.getBlue() + (int) ((c2.getBlue() - c1.getBlue()) * t);
-
+        r = c1.getRed() + ((int) ((c2.getRed() - c1.getRed()) * t));
+        g = c1.getGreen() + ((int) ((c2.getGreen() - c1.getGreen()) * t));
+        b = c1.getBlue() + ((int) ((c2.getBlue() - c1.getBlue()) * t));
+        System.out.println(r + " " + g + " " + b + " at t value of " + t);
         return new Color(r, g, b);
     }
     

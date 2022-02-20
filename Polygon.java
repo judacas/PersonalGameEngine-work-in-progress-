@@ -1,11 +1,12 @@
 //all polygons must be concave
 import java.awt.Color;
+import java.io.Console;
 public class Polygon {
     //adjacent verticies are to have lines between them, last vertex is to be connected with the first 
     private Line[] lines, rotatedLines;
     private Vector2[] verticies, rotatedVerticies;
     private Vector2 leftMost, rightMost, bottomMost, topMost;
-    public Vector2 position, velocity;
+    public Vector2 position, velocity, origin;
     public double theta;
     private Color color;
     public Color[][] pixelsFilled;
@@ -16,24 +17,23 @@ public class Polygon {
         this.position = position;
         // since velocity will be in pixels per second and time is measured in milliseconds I need to divide by a thousand here
         // to change from p/s to p/ms
-        this.velocity = Vector2.scale(velocity, 1f/1000f);
+        this.velocity = velocity.scale(1f/1000f);
         this.theta = theta;
         this.verticies = verticies;
-        resetOrigin(origin);
-        this.lines = vectors2Lines(verticies);
+        this.origin = origin;
         this.color = color;
         updateOrientation();
+        this.lines = vectors2Lines(verticies);
     }
 
-    public void resetOrigin(Vector2 origin) {
-        if (!origin.equals(Vector2.zero)) {
-            for (int i = 0; i < verticies.length - 1; i++) {
-                verticies[i] = Vector2.subtract(verticies[i], origin);
+    public void moveAllVerts(Vector2 moveBy) {
+        if (!moveBy.equals(Vector2.zero)) {
+            for (int i = 0; i < verticies.length; i++) {
+                verticies[i] = Vector2.add(verticies[i], moveBy.scale(-1));
             }
         }
     }
     
-
     public static Line[] vectors2Lines(Vector2[] verticies) {
         Line[] temp = new Line[verticies.length];
         // System.out.println("");
@@ -68,7 +68,6 @@ public class Polygon {
         isOutlineUpdated = false;
     }
 
-
     public Polygon updateOrientation() {
         if (!isOrientationUpdated) {
             rotatedVerticies = new Vector2[verticies.length];
@@ -92,16 +91,32 @@ public class Polygon {
                     bottomMost = rotatedVerticies[i];
                 }
             }
+            System.out.println(this);
+            moveAllVerts(Vector2.cartesianInit(leftMost.x, topMost.y));
+            System.out.println(this);
+            origin = Vector2.add(origin, Vector2.cartesianInit(leftMost.x, topMost.y));
             // System.out.print("left: " + leftMost);
             // System.out.print("   right: " + rightMost);
             // System.out.print("   bottom: " + bottomMost);
             // System.out.println("   top: " + topMost);
-            isOrientationUpdated = true;
+            isOrientationUpdated = true; 
         }
         return this;
     }
     
     public Color[][] updateOutline() {
+        if (!isOutlineUpdated) {
+            if (!isOrientationUpdated) {
+                updateOrientation();
+            }
+            pixelsOutline = new Color[(int) (rightMost.x) - (int) (leftMost.x) + 1][(int) (bottomMost.y)
+                    - (int) (topMost.y) + 1];
+            // System.out.println(pixelsOutline.length + " by " + pixelsOutline[0].length);
+            for (Line line : lines) {
+                line.drawOnTo(pixelsOutline, color);
+                // gotta move it
+            }
+        }
         // if (!isOutlineUpdated) {
         //     if (!isOrientationUpdated) {
         //         updateOrientation();
@@ -144,7 +159,7 @@ public class Polygon {
         //     // }
         // }
         
-        // isOutlineUpdated = true;
+        isOutlineUpdated = true;
     return pixelsOutline;
     }
 
@@ -159,6 +174,15 @@ public class Polygon {
             // code here
         }
         return pixelsFilled;
+    }
+
+    public String toString() {
+        String str = "Polygon has\n";
+        for (Vector2 vertex : verticies) {
+            str += "Vertex at: " + vertex + "\n";
+            
+        }
+        return str;
     }
     
 

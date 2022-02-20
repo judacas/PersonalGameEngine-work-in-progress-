@@ -19,11 +19,11 @@ public class Line {
         // System.out.println("\nAyo test  " + this.startPoint + " another test  " + this.endPoint);
         this.length = length;
         this.theta = theta;
-        normal = -1 / theta;
-        slope = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
-        left = (startPoint.x < endPoint.x) ? startPoint : endPoint;
-        right = (startPoint.x > endPoint.x) ? startPoint : endPoint;
-        top = (startPoint.y > endPoint.y) ? startPoint : endPoint;
+        normal = theta + Math.PI;
+        slope  = (endPoint.y - startPoint.y) / (endPoint.x - startPoint.x);
+        left   = (startPoint.x < endPoint.x) ? startPoint : endPoint;
+        right  = (startPoint.x > endPoint.x) ? startPoint : endPoint;
+        top    = (startPoint.y > endPoint.y) ? startPoint : endPoint;
         bottom = (startPoint.y < endPoint.y) ? startPoint : endPoint;
         if (endPoint.y - startPoint.y == 0) {
             type = Type.horizontal;
@@ -37,7 +37,7 @@ public class Line {
         else {
             type = Type.normal;
         }
-        System.out.println("made a " + type + " line");
+        // System.out.println("made a " + type + " line");
     }
 
     public static Line initPolar(Vector2 startPoint, double theta, double length) {
@@ -57,6 +57,10 @@ public class Line {
     
     public Line floor() {
         return initCartesian(startPoint.floor(), endPoint.floor());
+    }
+
+    public Line move(Vector2 moveBy) {
+        return Line.initCartesian(Vector2.add(startPoint, moveBy), Vector2.add(endPoint, moveBy));
     }
 
     public static Line rotate(Line line, double theta) {
@@ -94,12 +98,12 @@ public class Line {
         switch (type) {
             case horizontal:
                 for (int x = (int)left.x; x < (int)right.x; x++) {
-                    temp[x][(int) startPoint.y] = myImage.interpolate(temp[x][(int) startPoint.y], color, color.getAlpha());
+                    temp[x][(int) startPoint.y] = myImage.interpolate(temp[x][(int) startPoint.y], color, color.getAlpha()/255f);
                 }
                 break;
             case vertical:
                 for (int y = (int) bottom.y; y < (int) top.y; y++) {
-                    temp[(int)startPoint.x][y] = myImage.interpolate(temp[(int)startPoint.x][y], color, color.getAlpha());
+                    temp[(int)startPoint.x][y] = myImage.interpolate(temp[(int)startPoint.x][y], color, color.getAlpha()/255f);
                 }
                 break;
             case normal:
@@ -113,7 +117,7 @@ public class Line {
                     
                     for (int x = 0; Math.abs(x) <= (int) Math.abs(xEnd - xStart); x += xDirection) {
                         System.out.println("xStart:" + xStart + " | xEnd: " + xEnd + " | X: " + x + " | Y: " + y);
-                        temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha());
+                        temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha()/255f);
                     }
                 }
                 // int xStart = (int) bottom.x;
