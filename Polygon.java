@@ -1,6 +1,5 @@
 //all polygons must be concave
 import java.awt.Color;
-import java.io.Console;
 public class Polygon {
     //adjacent verticies are to have lines between them, last vertex is to be connected with the first 
     private Line[] lines, rotatedLines;
@@ -13,21 +12,43 @@ public class Polygon {
     public Color[][] pixelsOutline;
     private boolean isOrientationUpdated = false, isFilledUpdated = false, isOutlineUpdated = false;
 
-    public Polygon(Vector2[] verticies, Vector2 origin, double theta, Color color, Vector2 position, Vector2 velocity) {
-        this.position = position;
-        // since velocity will be in pixels per second and time is measured in milliseconds I need to divide by a thousand here
-        // to change from p/s to p/ms
-        this.velocity = velocity.scale(1f/1000f);
-        this.theta = theta;
-        this.verticies = verticies;
-        this.origin = origin;
-        this.color = color;
-        updateOrientation();
-        this.lines = vectors2Lines(verticies);
-    }
+   /**
+    * 
+    * @param verticies
+    * @param position
+    * @param origin
+    * @param velocity
+    * @param theta
+    * @param color
+    */
+   public Polygon(Vector2[] verticies, Vector2 position, Vector2 origin, Vector2 velocity, double theta, Color color) {
+       this.position = position;
+       // since velocity will be in pixels per second and time is measured in milliseconds I need to divide by a thousand here
+       // to change from p/s to p/ms
+       this.velocity = velocity.scale(1f / 1000f);
+       this.theta = theta;
+       this.verticies = verticies;
+       this.origin = origin;
+       this.color = color;
+       updateOrientation();
+       this.lines = vectors2Lines(verticies);
+   }
+    
+   public Polygon(Vector2[] verticies, Color color) {
+       this.position = Vector2.ZERO;
+       // since velocity will be in pixels per second and time is measured in milliseconds I need to divide by a thousand here
+       // to change from p/s to p/ms
+       this.velocity = Vector2.ZERO;
+       this.theta = 0;
+       this.verticies = verticies;
+       this.origin = Vector2.ZERO;
+       this.color = color;
+       updateOrientation();
+       this.lines = vectors2Lines(verticies);
+   }
 
     public void moveAllVerts(Vector2 moveBy) {
-        if (!moveBy.equals(Vector2.zero)) {
+        if (!moveBy.equals(Vector2.ZERO)) {
             for (int i = 0; i < verticies.length; i++) {
                 verticies[i] = Vector2.add(verticies[i], moveBy.scale(-1));
             }
@@ -91,10 +112,8 @@ public class Polygon {
                     bottomMost = rotatedVerticies[i];
                 }
             }
-            System.out.println(this);
             moveAllVerts(Vector2.cartesianInit(leftMost.x, topMost.y));
-            System.out.println(this);
-            origin = Vector2.add(origin, Vector2.cartesianInit(leftMost.x, topMost.y));
+            origin = Vector2.add(origin, Vector2.cartesianInit(-leftMost.x, -topMost.y));
             // System.out.print("left: " + leftMost);
             // System.out.print("   right: " + rightMost);
             // System.out.print("   bottom: " + bottomMost);
