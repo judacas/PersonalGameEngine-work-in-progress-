@@ -1,6 +1,5 @@
 //all polygons must be concave
 import java.awt.Color;
-import java.io.Console;
 public class Polygon {
     //adjacent verticies are to have lines between them, last vertex is to be connected with the first 
     private Line[] lines, rotatedLines;

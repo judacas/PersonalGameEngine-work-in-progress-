@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import javax.lang.model.util.Elements.Origin;
 import javax.swing.JPanel;
 
 public class myImage extends JPanel {
