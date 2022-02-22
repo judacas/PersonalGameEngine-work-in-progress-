@@ -7,7 +7,7 @@ import java.awt.Color;
 public class Rectangle extends Polygon{
 
     public Rectangle(Vector2[] verticies, Vector2 origin, double theta) {
-        super(verticies, origin, theta, Color.black, Vector2.zero, Vector2.zero);
+        super(verticies, Vector2.ZERO, origin, Vector2.ZERO, theta, Color.WHITE);
     }
     
 }

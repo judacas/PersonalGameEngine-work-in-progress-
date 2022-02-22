@@ -1,6 +1,6 @@
 public class Vector2 {
     public double x, y, theta, magnitude;
-    public static Vector2 zero = new Vector2(0, 0, 0, 0);
+    public static Vector2 ZERO = new Vector2(0, 0, 0, 0);
 
     
     // use this method signature for cartesian coordinate definition

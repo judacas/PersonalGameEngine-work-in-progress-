@@ -89,6 +89,12 @@ public class Line {
         return "starts at: " + startPoint + " | ends at: " + endPoint + "\n\n";
     }
 
+    public Vector2[] toVectors() {
+        Vector2[] vectors = new Vector2[2];
+        vectors[0] = startPoint;
+        vectors[1] = endPoint;
+        return vectors;
+    }
     // Ok I started to allow drawing outside of image but didn't finish
     // make sure to finish after all other errors are done
     public Color[][] drawOnTo(Color[][] image, Color color) {
@@ -116,7 +122,7 @@ public class Line {
                     xEnd = (int) predictX(y);
                     
                     for (int x = 0; Math.abs(x) <= (int) Math.abs(xEnd - xStart); x += xDirection) {
-                        System.out.println("xStart:" + xStart + " | xEnd: " + xEnd + " | X: " + x + " | Y: " + y);
+                        // System.out.println("xStart:" + xStart + " | xEnd: " + xEnd + " | X: " + x + " | Y: " + y);
                         temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha()/255f);
                     }
                 }
