@@ -24,12 +24,12 @@ public class Vector2 {
         return new Vector2(tempX, tempY, theta, magnitude);
     }
     
-    public static Vector2 add(Vector2 a, Vector2 b) {
-        return Vector2.cartesianInit(a.x + b.x, a.y + b.y);
+    public Vector2 add(Vector2 a) {
+        return Vector2.cartesianInit(this.x + a.x, this.y + a.y);
     }
 
-    public static Vector2 subtract(Vector2 a, Vector2 b) {
-        return Vector2.cartesianInit(a.x - b.x, a.y - b.y);
+    public Vector2 subtract(Vector2 a) {
+        return this.add(a.scale(-1));
     }
 
     public Vector2 scale(double scalar) {
@@ -40,12 +40,12 @@ public class Vector2 {
         return (double) (Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2)));
     }
     
-    public static Vector2 rotate(Vector2 vector, double theta) {
-        return Vector2.polarInit(vector.theta + theta, vector.magnitude);
+    public Vector2 rotate(double theta) {
+        return Vector2.polarInit((this.theta + theta)%(2*Math.PI), this.magnitude);
     }
 
-    public static Vector2 rotate(Vector2 vector, Vector2 origin, double theta) {
-        return Vector2.add(rotate(Vector2.subtract(vector, origin), theta), origin);
+    public Vector2 rotate(double theta, Vector2 origin) {
+        return Line.initCartesian(origin, this).rotate(theta).endPoint;
     }
 
     public Vector2 floor() {

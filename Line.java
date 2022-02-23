@@ -42,7 +42,7 @@ public class Line {
 
     public static Line initPolar(Vector2 startPoint, double theta, double length) {
         // System.out.println("polat line initiated");
-        Vector2 tempEndPoint = Vector2.add(startPoint, Vector2.polarInit(theta, length));
+        Vector2 tempEndPoint = startPoint.add(Vector2.polarInit(theta, length));
         return new Line(startPoint, tempEndPoint, theta, length);
 
     }
@@ -60,21 +60,25 @@ public class Line {
     }
 
     public Line move(Vector2 moveBy) {
-        return Line.initCartesian(Vector2.add(startPoint, moveBy), Vector2.add(endPoint, moveBy));
+        return Line.initCartesian(startPoint.add(moveBy), endPoint.add(moveBy));
     }
 
-    public static Line rotate(Line line, double theta) {
+    public Line scale(double scalar){
+        return Line.initPolar(startPoint, theta, length * scalar);
+    }
+
+    public Line rotate(double theta) {
         // System.out.println("rotating");
         // Line temp = line;
-        // temp.endPoint = Vector2.rotate(temp.endPoint, temp.startPoint, theta);
-        return Line.initPolar(line.startPoint, line.theta + theta, line.length);
+        // temp.endPoint = Vector2.rotate(t3emp.endPoint, temp.startPoint, theta);
+        return Line.initPolar(this.startPoint, (this.theta + theta)%(2*Math.PI), this.length);
     }
 
-    public static Line rotate(Line line, Vector2 origin, double theta) {
+    public Line rotate(double theta, Vector2 origin) {
         // Line temp = line;
         // temp.endPoint = Vector2.rotate(temp.endPoint, origin, theta);
         // temp.startPoint = Vector2.rotate(temp.startPoint, origin, theta);
-        return Line.initCartesian(Vector2.rotate(line.startPoint, origin, theta), Vector2.rotate(line.endPoint, origin, theta));
+        return Line.initCartesian(startPoint.rotate(theta, origin), endPoint.rotate(theta, origin));
     }
 
     public double predictY(double x) {
@@ -95,50 +99,50 @@ public class Line {
         vectors[1] = endPoint;
         return vectors;
     }
-    // Ok I started to allow drawing outside of image but didn't finish
-    // make sure to finish after all other errors are done
     public Color[][] drawOnTo(Color[][] image, Color color) {
         // make a debug statement saying if your trying to draw a non integer vector
-        Color[][] temp = image;
-        // System.out.println("drawing a " + type + " line");
         switch (type) {
             case horizontal:
-                for (int x = (int)left.x; x < (int)right.x; x++) {
-                    temp[x][(int) startPoint.y] = myImage.interpolate(temp[x][(int) startPoint.y], color, color.getAlpha()/255f);
+                for (int x = Math.max((int)left.x, 0); x < Math.min((int)right.x, MasterMind.w); x++) {
+                    image[x][(int) startPoint.y] = myImage.interpolate(image[x][(int) startPoint.y], color, color.getAlpha()/255f);
                 }
                 break;
             case vertical:
-                for (int y = (int) bottom.y; y < (int) top.y; y++) {
-                    temp[(int)startPoint.x][y] = myImage.interpolate(temp[(int)startPoint.x][y], color, color.getAlpha()/255f);
+                for (int y = Math.max((int) bottom.y, 0); y < Math.min((int) top.y, MasterMind.h); y++) {
+                    image[(int)startPoint.x][y] = myImage.interpolate(image[(int)startPoint.x][y], color, color.getAlpha()/255f);
                 }
                 break;
             case normal:
             int xStart = (int) bottom.x;
                 int xEnd = xStart;
-                // temp[(int)bottom.x][(int)bottom.y] = color;
+                // image[(int)bottom.x][(int)bottom.y] = color;
                 int xDirection = (top.x > bottom.x) ? 1 : -1;
-                for (int y = (int) bottom.y; y <= (int) top.y; y++) {
+                for (int y = Math.max((int) bottom.y, 0); y <= Math.min((int) top.y, MasterMind.h); y++) {
                     xStart = xEnd;
                     xEnd = (int) predictX(y);
                     
                     for (int x = 0; Math.abs(x) <= (int) Math.abs(xEnd - xStart); x += xDirection) {
                         // System.out.println("xStart:" + xStart + " | xEnd: " + xEnd + " | X: " + x + " | Y: " + y);
-                        temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha()/255f);
+                        try {
+                            image[xStart + x][y] = myImage.interpolate(image[xStart + x][y], color, color.getAlpha()/255f);
+                        } catch (Exception e) {
+                            System.out.println("went out of the screen");
+                        }
                     }
                 }
                 // int xStart = (int) bottom.x;
                 // int xEnd = xStart;
-                // // temp[(int)bottom.x][(int)bottom.y] = color;
+                // // image[(int)bottom.x][(int)bottom.y] = color;
                 // int xDirection = (top.x > bottom.x) ? 1 : -1;
                 // for (int y = (int) bottom.y; y <= (int) top.y; y++) {
                 //     xStart = xEnd;
                 //     xEnd = (int)predictX(y);
                 //     for (int x = 0; x <= (int) Math.abs(xEnd - xStart); x += xDirection) {
-                //         temp[xStart + x][y] = myImage.interpolate(temp[xStart + x][y], color, color.getAlpha());;;
+                //         image[xStart + x][y] = myImage.interpolate(image[xStart + x][y], color, color.getAlpha());;;
                 //     }
                 // }
                 break;
         }
-        return temp;
+        return image;
     }
 }

@@ -50,7 +50,7 @@ public class Polygon {
     public void moveAllVerts(Vector2 moveBy) {
         if (!moveBy.equals(Vector2.ZERO)) {
             for (int i = 0; i < verticies.length; i++) {
-                verticies[i] = Vector2.add(verticies[i], moveBy.scale(-1));
+                verticies[i] = verticies[i].subtract(moveBy);
             }
         }
     }
@@ -93,7 +93,7 @@ public class Polygon {
         if (!isOrientationUpdated) {
             rotatedVerticies = new Vector2[verticies.length];
             for (int i = 0; i < verticies.length; i++) {
-                rotatedVerticies[i] = Vector2.rotate(verticies[i], theta).floor();
+                rotatedVerticies[i] = verticies[i].rotate(theta, origin).floor();
             }
             rotatedLines = vectors2Lines(rotatedVerticies);
             leftMost = rotatedVerticies[0];
@@ -113,7 +113,7 @@ public class Polygon {
                 }
             }
             moveAllVerts(Vector2.cartesianInit(leftMost.x, topMost.y));
-            origin = Vector2.add(origin, Vector2.cartesianInit(-leftMost.x, -topMost.y));
+            origin = origin.add(Vector2.cartesianInit(-leftMost.x, -topMost.y));
             // System.out.print("left: " + leftMost);
             // System.out.print("   right: " + rightMost);
             // System.out.print("   bottom: " + bottomMost);
